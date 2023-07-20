@@ -10,7 +10,7 @@ export const Task = ({
   };
 
   const doneBtnOnClick = () => {
-    toggleDoneTaskFunc(completed);
+    toggleDoneTaskFunc(id);
   };
 
   return (

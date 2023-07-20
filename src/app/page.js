@@ -30,13 +30,8 @@ export default function Home() {
   const toggleDoneTask = (taskId) => {
     const newTasks = structuredClone(tasks);
     const task = newTasks.find((x) => x.id === taskId);
-    if (status[taskId]) {
-      task.completed = task.completed;
-      setCount2(count2 + 1);
-    } else {
-      task.completed = !task.completed;
-      setCount2(count2 - 1);
-    }
+    task.completed = !task.completed;
+    setCount2(count2 + 1);
     setTasks(newTasks);
     setStatus({ ...status });
   };
