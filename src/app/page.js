@@ -12,7 +12,6 @@ export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
-  const [status, setStatus] = useState(false);
 
   const addTask = (newTaskTitle) => {
     const newTask = { id: nanoid(), title: newTaskTitle, completed: false };
@@ -32,7 +31,11 @@ export default function Home() {
     const task = newTasks.find((x) => x.id === taskId);
     task.completed = !task.completed;
     setTasks(newTasks);
-    setCount2();
+    if (task.completed) {
+      setCount2(count2 + 1);
+    } else {
+      setCount2(count2 - 1);
+    }
   };
 
   return (
