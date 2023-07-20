@@ -32,9 +32,9 @@ export default function Home() {
     task.completed = !task.completed;
     setTasks(newTasks);
     if (task.completed) {
-      setCount2(count2 + 1);
-    } else {
       setCount2(count2 - 1);
+    } else {
+      setCount2(count2 + 1);
     }
   };
 
