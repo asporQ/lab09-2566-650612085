@@ -10,15 +10,18 @@ import { useState } from "react";
 export default function Home() {
   //tasks = array of {id: string, title: string, completed: boolean}
   const [tasks, setTasks] = useState([]);
+  const [count, setCount] = useState(0);
 
   const addTask = (newTaskTitle) => {
     const newTask = { id: nanoid(), title: newTaskTitle, completed: false };
     const newTasks = [...tasks, newTask];
+    setCount(count + 1);
     setTasks(newTasks);
   };
 
   const deleteTask = (taskId) => {
     const newTasks = tasks.filter((task) => task.id !== taskId);
+    setCount(count - 1);
     setTasks(newTasks);
   };
 
@@ -41,7 +44,7 @@ export default function Home() {
       <div style={{ maxWidth: "400px" }} className="mx-auto">
         {/* Task summary */}
         <p className="text-center text-secondary fst-italic">
-          All (...) Done (...)
+          All ({count}) Done ({})
         </p>
         {/* task input */}
         <TaskInput addTaskFunc={addTask} />
