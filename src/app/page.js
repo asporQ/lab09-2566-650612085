@@ -34,7 +34,7 @@ export default function Home() {
     if (task.completed) {
       setCount2(count2 + 1);
     } else {
-      setCount2(count2);
+      setCount2(count2 - 1);
     }
   };
 
