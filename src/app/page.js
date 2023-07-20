@@ -12,7 +12,7 @@ export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
-  const [status, setStatus] = useState({});
+  const [status, setStatus] = useState(false);
 
   const addTask = (newTaskTitle) => {
     const newTask = { id: nanoid(), title: newTaskTitle, completed: false };
