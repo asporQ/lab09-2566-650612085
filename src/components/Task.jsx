@@ -5,7 +5,6 @@ export const Task = ({
   toggleDoneTaskFunc,
   completed,
 }) => {
-  let completed = false;
   const deleteBtnOnClick = () => {
     deleteTaskFunc(id);
   };
