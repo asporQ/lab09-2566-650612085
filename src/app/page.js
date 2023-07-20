@@ -31,9 +31,8 @@ export default function Home() {
     const newTasks = structuredClone(tasks);
     const task = newTasks.find((x) => x.id === taskId);
     task.completed = !task.completed;
-    setCount2(count2 + 1);
     setTasks(newTasks);
-    setStatus({ ...status });
+    setCount2();
   };
 
   return (
