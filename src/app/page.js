@@ -44,7 +44,7 @@ export default function Home() {
       <div style={{ maxWidth: "400px" }} className="mx-auto">
         {/* Task summary */}
         <p className="text-center text-secondary fst-italic">
-          All ({count}) Done ({})
+          All ({count}) Done (...)
         </p>
         {/* task input */}
         <TaskInput addTaskFunc={addTask} />
