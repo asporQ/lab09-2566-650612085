@@ -12,6 +12,7 @@ export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
+  const [status, setStatus] = useState({});
 
   const addTask = (newTaskTitle) => {
     const newTask = { id: nanoid(), title: newTaskTitle, completed: false };
@@ -27,14 +28,17 @@ export default function Home() {
   };
 
   const toggleDoneTask = (taskId) => {
-    //structuredClone will copy an array or an object "deeply"
-    //So objects within an object will be copied too
     const newTasks = structuredClone(tasks);
-    //search for a task based on condition
     const task = newTasks.find((x) => x.id === taskId);
-    task.completed = !task.completed;
-    setCount2(count2 + 1);
+    if (status[taskId]) {
+      task.completed = task.completed;
+      setCount2(count2 + 1);
+    } else {
+      task.completed = !task.completed;
+      setCount2(count2 - 1);
+    }
     setTasks(newTasks);
+    setStatus({ ...status });
   };
 
   return (
