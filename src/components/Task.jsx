@@ -22,7 +22,9 @@ export const Task = ({
         But if task is not completed : 
         <span>{title}</span>
       */}
-      <span>{title}</span>
+      <span>
+        <del>{title}</del>
+      </span>
       <button className="btn btn-success" onClick={doneBtnOnClick}>
         Done
       </button>
