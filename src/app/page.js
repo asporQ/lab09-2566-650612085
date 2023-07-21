@@ -21,9 +21,11 @@ export default function Home() {
   };
 
   const deleteTask = (taskId) => {
-    if (count2 > 0) {
+    const taskToDelete = tasks.find((task) => task.id === taskId);
+    if (taskToDelete && taskToDelete.completed) {
       setCount2(Math.max(count2 - 1, 0));
     }
+
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setCount1(count1 - 1);
     setTasks(newTasks);
@@ -32,15 +34,16 @@ export default function Home() {
   const toggleDoneTask = (taskId) => {
     const newTasks = structuredClone(tasks);
     const task = newTasks.find((x) => x.id === taskId);
+    const isTaskCompleted = task.completed;
     task.completed = !task.completed;
     setTasks(newTasks);
-    if (task.completed) {
+
+    if (task.completed && !isTaskCompleted) {
       setCount2(count2 + 1);
-    } else {
-      setCount2(count2 - 1);
+    } else if (!task.completed && isTaskCompleted) {
+      setCount2(Math.max(count2 - 1, 0));
     }
   };
-
   return (
     // Main container
     <div className="container mx-auto">
