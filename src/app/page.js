@@ -1,82 +1,69 @@
 "use client";
+import { UserCard } from "@/components/UserCard";
+import { cleanUser } from "@/libs/cleanUser";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { Task } from "@/components/Task";
-import { TaskInput } from "@/components/TaskInput";
-import { nanoid } from "nanoid";
-import { useState } from "react";
-
-export default function Home() {
-  //tasks = array of {id: string, title: string, completed: boolean}
-  const [tasks, setTasks] = useState([]);
-  const [count1, setCount1] = useState(0);
-  const [count2, setCount2] = useState(0);
-
-  const addTask = (newTaskTitle) => {
-    const newTask = { id: nanoid(), title: newTaskTitle, completed: false };
-    const newTasks = [...tasks, newTask];
-    setCount1(count1 + 1);
-    setTasks(newTasks);
-  };
-
-  const deleteTask = (taskId) => {
-    const taskToDelete = tasks.find((task) => task.id === taskId);
-    if (taskToDelete && taskToDelete.completed) {
-      setCount2(Math.max(count2 - 1, 0));
+export default function RandomUserPage() {
+  //user = null or array of object
+  const [isFirstLoad, setisFirstLoad] = useState(true);
+  const [users, setUsers] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [genAmount, setGenAmount] = useState(1);
+  useEffect(() => {
+    if (isFirstLoad) {
+      setisFirstLoad(false);
+      return;
     }
+    localStorage.setItem("amout", genAmount);
+  }, [genAmount]);
 
-    const newTasks = tasks.filter((task) => task.id !== taskId);
-    setCount1(count1 - 1);
-    setTasks(newTasks);
+  useEffect(() => {
+    const loadedTasks = localStorage.getItem("amout");
+    setGenAmount(loadedTasks);
+  }, []);
+
+  const generateBtnOnClick = async () => {
+    setIsLoading(true);
+    const resp = await axios.get(
+      `https://randomuser.me/api/?results=${genAmount}`
+    );
+    setIsLoading(false);
+    const users = resp.data.results;
+    const cleanedUser = users.map((person) => cleanUser(person));
+    setUsers(cleanedUser);
   };
 
-  const toggleDoneTask = (taskId) => {
-    const newTasks = structuredClone(tasks);
-    const task = newTasks.find((x) => x.id === taskId);
-    const isTaskCompleted = task.completed;
-    task.completed = !task.completed;
-    setTasks(newTasks);
-
-    if (task.completed && !isTaskCompleted) {
-      setCount2(count2 + 1);
-    } else if (!task.completed && isTaskCompleted) {
-      setCount2(Math.max(count2 - 1, 0));
-    }
-  };
   return (
-    // Main container
-    <div className="container mx-auto">
-      {/* header section */}
-      <Header />
-      {/* tasks container */}
-      <div style={{ maxWidth: "400px" }} className="mx-auto">
-        {/* Task summary */}
-        <p className="text-center text-secondary fst-italic">
-          All ({count1}) Done ({count2})
-        </p>
-        {/* task input */}
-        <TaskInput addTaskFunc={addTask} />
-
-        {/* tasks mapping*/}
-        {tasks.map((task) => (
-          <Task
-            id={task.id}
-            title={task.title}
-            deleteTaskFunc={deleteTask}
-            toggleDoneTaskFunc={toggleDoneTask}
-            completed={task.completed}
-            key={task.id}
+    <div style={{ maxWidth: "700px" }} className="mx-auto">
+      <p className="display-4 text-center fst-italic m-4">Users Generator</p>
+      <div className="d-flex justify-content-center align-items-center fs-5 gap-2">
+        Number of User(s)
+        <input
+          className="form-control text-center"
+          style={{ maxWidth: "100px" }}
+          type="number"
+          onChange={(e) => setGenAmount(e.target.value)}
+          value={genAmount}
+        />
+        <button className="btn btn-dark" onClick={generateBtnOnClick}>
+          Generate
+        </button>
+      </div>
+      {isLoading && (
+        <p className="display-6 text-center fst-italic my-4">Loading ...</p>
+      )}
+      {users &&
+        !isLoading &&
+        users.map((index) => (
+          <UserCard
+            name={index.name}
+            imgUrl={index.imgUrl}
+            address={index.address}
+            email={index.email}
+            key={index.email}
           />
         ))}
-      </div>
-
-      {/* //footer section */}
-      <Footer
-        year="2023"
-        fullName="Tikomporn Luxsanaprokin"
-        studentId="650612085"
-      />
     </div>
   );
 }
